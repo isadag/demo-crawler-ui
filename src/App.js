@@ -3,7 +3,7 @@ import "./App.css";
 
 function App() {
   // const statusApiUrl = "https://demo-crawler-api.herokuapp.com/api/crawlerstatus";
-  const screenshotApiUrl = "https://localhost:5001/api/pagecrawler";
+  const screenshotApiUrl = "https://demo-crawler-api.herokuapp.com/api/pagecrawler";
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [status, setStatus] = useState(null);
