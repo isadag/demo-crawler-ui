@@ -2,6 +2,19 @@ h1 {
   text-align: center;
 }
 
+input {
+  margin: 10px;
+}
+
+.container {
+  margin: 50px;
+  width: 100%;
+}
+
+.center {
+  text-align: center;
+}
+
 .imageContainer {
   width: 100%;
   max-width: 800px;
