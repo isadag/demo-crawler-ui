@@ -8,6 +8,13 @@ function PageResultWrapper() {
     const [status, setStatus] = useState(null);
     const [pageUrl, setPageUrl] = useState('');
 
+    function addHttpIfMissing(link) {
+        if (link.search(/^http[s]?\:\/\//) == -1) {
+            link = 'http://' + link;
+        }
+        return link;
+    }
+
     const onInputChange = (e) => {
         let url = e.target.value;
         setPageUrl(url);
@@ -19,8 +26,8 @@ function PageResultWrapper() {
         // TODO: Add validation and feedback on error instead
         if (pageUrl == null || pageUrl === '') {
             setPageUrl('http://www.google.com');
-        }
-        getPageFromCrawler(pageUrl);
+        }        
+        getPageFromCrawler(addHttpIfMissing(pageUrl));
     }
 
     const getPageFromCrawler = (url) => {
@@ -59,7 +66,7 @@ function PageResultWrapper() {
             );
         } else {
             return (
-                <Form onSubmit={onSubmit} onChange={onInputChange} />
+                <Form className="center" onSubmit={onSubmit} onChange={onInputChange} />
             );
         }
     }
