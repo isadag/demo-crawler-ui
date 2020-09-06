@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Form from './form';
 
 function PageResultWrapper() {
-    const screenshotApiUrl = "https://localhost:5001/api/pagecrawler";
+    const pageCrawlerApiUrl = "https://demo-crawler-api.herokuapp.com/api/pagecrawler";
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [status, setStatus] = useState(null);
@@ -32,7 +32,7 @@ function PageResultWrapper() {
 
     const getPageFromCrawler = (url) => {
         setIsLoading(true);
-        fetch(`${screenshotApiUrl}?url=${url}`)
+        fetch(`${pageCrawlerApiUrl}?url=${url}`)
             .then(res => res.json())
             .then(
                 (result) => {
