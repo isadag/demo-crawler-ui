@@ -6,7 +6,7 @@ function PageResultWrapper() {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [status, setStatus] = useState(null);
-    const [pageUrl, setPageUrl] = useState('');
+    const [pageUrl, setPageUrl] = useState('http://www.google.com');
 
     function addHttpIfMissing(link) {
         if (link.search(/^http[s]?\:\/\//) == -1) {
