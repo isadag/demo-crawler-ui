@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Form from './form';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function PageResultWrapper() {
     const pageCrawlerApiUrl = "https://demo-crawler-api.herokuapp.com/api/pagecrawler";
@@ -7,9 +9,13 @@ function PageResultWrapper() {
     const [isLoading, setIsLoading] = useState(false);
     const [status, setStatus] = useState(null);
     const [pageUrl, setPageUrl] = useState('http://www.google.com');
-
+    // const [open, setOpen] = useState(isLoading);
+    const handleClose = () => {
+        setIsLoading(false);
+    };
+    
     function addHttpIfMissing(link) {
-        if (link.search(/^http[s]?\:\/\//) === -1) {
+        if (link.search(/^http[s]?:\/\//) === -1) {
             link = 'http://' + link;
         }
         return link;
@@ -50,7 +56,12 @@ function PageResultWrapper() {
     if (error) {
         return <div>Error: {error.message}</div>;
     } else if (isLoading) {
-        return <div>Loading...</div>;
+        // return <div>Loading...</div>;
+        return (
+            <Backdrop  open={isLoading} onClick={handleClose}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        );
     } else {
         if (status != null) {
             return (
