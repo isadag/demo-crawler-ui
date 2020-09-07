@@ -9,7 +9,7 @@ function PageResultWrapper() {
     const [pageUrl, setPageUrl] = useState('http://www.google.com');
 
     function addHttpIfMissing(link) {
-        if (link.search(/^http[s]?\:\/\//) == -1) {
+        if (link.search(/^http[s]?\:\/\//) === -1) {
             link = 'http://' + link;
         }
         return link;
@@ -26,7 +26,7 @@ function PageResultWrapper() {
         // TODO: Add validation and feedback on error instead
         if (pageUrl == null || pageUrl === '') {
             setPageUrl('http://www.google.com');
-        }        
+        }
         getPageFromCrawler(addHttpIfMissing(pageUrl));
     }
 
