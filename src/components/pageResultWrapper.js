@@ -46,7 +46,7 @@ function PageResultWrapper() {
         if (pageUrl == null || pageUrl === '') {
             setPageUrl('http://www.google.com');
         }
-        getPageFromCrawler(pageUrl);
+        getPageFromCrawler(addHttpIfMissing(pageUrl));
     }
 
     const getPageFromCrawler = (url) => {
