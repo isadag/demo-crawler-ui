@@ -14,7 +14,7 @@ const Form = (props) => {
     return (
         <React.Fragment>
             <form onSubmit={props.onSubmit}>
-                <TextField type="url" fullWidth name="url" placeholder="http://www.google.com" id="standard-required" label="Page URL" onChange={props.onChange} value={props.pageUrl} />
+                <TextField inputProps={{inputMode: 'url'}} fullWidth name="url" placeholder="http://www.google.com" id="standard-required" label="Page URL" onChange={props.onChange} value={props.pageUrl} />
                 <Button fullWidth variant="contained" color="primary" type="submit" className={classes.button}>
                     Something
                 </Button>
