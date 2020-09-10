@@ -65,15 +65,20 @@ function PageResultWrapper() {
         fetch(requestUrl)
             .then(res => res.json())
             .then(
-                (result) => {
+                (response) => {
                     setIsLoading(false);
-                    if (result?.pageResult != null) {
-                        setAccessibility(result.pageResult.accessibility);
-                        setBestPractices(result.pageResult.bestPractices);
-                        setPerformance(result.pageResult.performance);
-                        setSeo(result.pageResult.seo);
+                    if (response.status == false) {
+                        setError("Sorry :( Could not get results for the requested web page. Please try again later.");
                     }
-                    setPageScreenshot(result.fullPageScreenshot);
+                    else {
+                        if (response.result?.pageResult != null) {
+                            setAccessibility(response.result.pageResult.accessibility);
+                            setBestPractices(response.result.pageResult.bestPractices);
+                            setPerformance(response.result.pageResult.performance);
+                            setSeo(response.result.pageResult.seo);
+                        }
+                        setPageScreenshot(response.result.fullPageScreenshot);
+                    }
                 },
                 (error) => {
                     if (!error) {
