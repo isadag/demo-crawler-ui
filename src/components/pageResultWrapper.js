@@ -7,10 +7,14 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Slide from '@material-ui/core/Slide';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
     image: {
         width: '100%'
+    },
+    gridItem: {
+        margin: theme.spacing(2, 0, 2),
     },
 }));
 
@@ -18,11 +22,16 @@ const useStyles = makeStyles((theme) => ({
 function PageResultWrapper() {
     const classes = useStyles();
     const pageCrawlerApiUrl = "https://demo-crawler-api.herokuapp.com/api/pagecrawler";
+    // const pageCrawlerApiUrl = "https://localhost:5001/api/pagecrawler";
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [pageResult, setPageResult] = useState(null);
+    const [pageScreenshot, setPageScreenshot] = useState(null);
     const [pageUrl, setPageUrl] = useState('http://www.google.com');
-    // const [open, setOpen] = useState(isLoading);
+    const [accessibility, setAccessibility] = useState("N/A");
+    const [bestPractices, setBestPractices] = useState("N/A");
+    const [performance, setPerformance] = useState("N/A");
+    const [seo, setSeo] = useState("N/A");
+
     const handleClose = () => {
         setIsLoading(false);
     };
@@ -46,17 +55,25 @@ function PageResultWrapper() {
         if (pageUrl == null || pageUrl === '') {
             setPageUrl('http://www.google.com');
         }
-        getPageFromCrawler(addHttpIfMissing(pageUrl));
+        getPageFromCrawler(addHttpIfMissing(pageUrl), true);
     }
 
-    const getPageFromCrawler = (url) => {
+    const getPageFromCrawler = (url, includePageResult) => {
+        let requestUrl = `${pageCrawlerApiUrl}?url=${url}&fetchPageResults=${includePageResult}`;
+        console.log(requestUrl);
         setIsLoading(true);
-        fetch(`${pageCrawlerApiUrl}?url=${url}`)
+        fetch(requestUrl)
             .then(res => res.json())
             .then(
                 (result) => {
                     setIsLoading(false);
-                    setPageResult(result);
+                    if (result?.pageResult != null) {
+                        setAccessibility(result.pageResult.accessibility);
+                        setBestPractices(result.pageResult.bestPractices);
+                        setPerformance(result.pageResult.performance);
+                        setSeo(result.pageResult.seo);
+                    }
+                    setPageScreenshot(result.fullPageScreenshot);
                 },
                 (error) => {
                     if (!error) {
@@ -72,7 +89,6 @@ function PageResultWrapper() {
     if (error) {
         return <div>Error: {error.message}</div>;
     } else if (isLoading) {
-        // return <div>Loading...</div>;
         return (
             <React.Fragment>
                 <Backdrop open={isLoading} onClick={handleClose}>
@@ -81,32 +97,85 @@ function PageResultWrapper() {
             </React.Fragment>
         );
     } else {
-        if (pageResult != null) {
+        if (pageScreenshot != null) {
             return (
                 <React.Fragment>
                     <Grid container direction="column" alignItems="center" justify="center">
                         <Grid item xs={12}>
                             <Form onSubmit={onSubmit} onChange={onInputChange} pageUrl={pageUrl} />
                         </Grid>
-                        <Slide direction="up" in={pageResult} mountOnEnter unmountOnExit>
+                        <Slide direction="up" in={pageScreenshot} mountOnEnter unmountOnExit>
                             <Grid item xs={10} sm={8}>
                                 <Card>
                                     <CardContent>
-                                        <img src={`data:image/png;base64,${pageResult}`} alt="screenshot" className={classes.image} />
+                                        <img src={`data:image/png;base64,${pageScreenshot}`} alt="screenshot" className={classes.image} />
                                     </CardContent>
                                 </Card>
                             </Grid>
                         </Slide>
                     </Grid>
+                    <Grid container direction="row" justify="space-around" alignItems="flex-start">
+                        <Grid item xs={5} sm={2} className={classes.gridItem}>
+                            <Card variant="outlined">
+                                <CardContent>
+                                    <Typography className={classes.title} color="textSecondary" align="center">
+                                        Accessibility
+                                        </Typography>
+                                    <Typography variant="h3" component="p" align="center">
+                                        {accessibility.score}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={5} sm={2} className={classes.gridItem}>
+                            <Card variant="outlined">
+                                <CardContent>
+                                    <Typography className={classes.title} color="textSecondary" align="center">
+                                        Best practices
+                                        </Typography>
+                                    <Typography variant="h3" component="p" align="center">
+                                        {bestPractices.score}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={5} sm={2} className={classes.gridItem}>
+                            <Card variant="outlined">
+                                <CardContent>
+                                    <Typography className={classes.title} color="textSecondary" align="center">
+                                        Performance
+                                        </Typography>
+                                    <Typography variant="h3" component="p" align="center">
+                                        {performance.score}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+
+                        <Grid item xs={5} sm={2} className={classes.gridItem}>
+                            <Card variant="outlined">
+                                <CardContent>
+                                    <Typography className={classes.title} color="textSecondary" align="center">
+                                        Seo
+                                        </Typography>
+                                    <Typography variant="h3" component="p" align="center">
+                                        {seo.score}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    </Grid>
                 </React.Fragment>
             );
         } else {
             return (
-                <Grid container direction="column" alignItems="center" justify="center">
-                    <Grid item xs={12}>
-                        <Form className="center" onSubmit={onSubmit} onChange={onInputChange} />
+                <React.Fragment>
+                    <Grid container direction="column" alignItems="center" justify="center">
+                        <Grid item xs={12}>
+                            <Form className="center" onSubmit={onSubmit} onChange={onInputChange} />
+                        </Grid>
                     </Grid>
-                </Grid>
+                </React.Fragment>
             );
         }
     }

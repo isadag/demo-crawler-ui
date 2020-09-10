@@ -9,7 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    margin: theme.spacing(4, 0, 3),
+    margin: theme.spacing(3, 0, 3),
   },
 }));
 
@@ -40,9 +40,9 @@ function App() {
             Do something to find something yada yada yada...
           </Typography>
         </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}> */}
             <PageWrapper />
-          </Grid>
+          {/* </Grid> */}
       </Grid>
     </React.Fragment>
 
