@@ -60,7 +60,6 @@ function PageResultWrapper() {
 
     const getPageFromCrawler = (url, includePageResult) => {
         let requestUrl = `${pageCrawlerApiUrl}?url=${url}&fetchPageResults=${includePageResult}`;
-        console.log(requestUrl);
         setIsLoading(true);
         fetch(requestUrl)
             .then(res => res.json())
