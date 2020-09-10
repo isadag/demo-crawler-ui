@@ -33,7 +33,7 @@ function App() {
       </AppBar>
       <Grid container direction="column" alignItems="center" justify="center" className={classes.container}>
         <Grid item xs={12} className={classes.container}>
-          <Typography variant="h3" component="h1" align="center">
+          <Typography variant="h2" component="h1" align="center">
             Web page stuff
           </Typography>
           <Typography variant="h5" component="p" align="center">

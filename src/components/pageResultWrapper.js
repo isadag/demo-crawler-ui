@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         width: '100%'
     },
     gridItem: {
-        margin: theme.spacing(2, 0, 2),
+        margin: theme.spacing(3, 0, 3),
     },
 }));
 
@@ -115,6 +115,11 @@ function PageResultWrapper() {
                         </Slide>
                     </Grid>
                     <Grid container direction="row" justify="space-around" alignItems="flex-start">
+                        <Grid item xs={12} className={classes.gridItem}>
+                            <Typography component="h2" variant="h3" align="center">
+                                Web page scoring
+                            </Typography>
+                        </Grid>
                         <Grid item xs={5} sm={2} className={classes.gridItem}>
                             <Card variant="outlined">
                                 <CardContent>
