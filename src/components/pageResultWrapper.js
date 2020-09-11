@@ -27,8 +27,6 @@ function PageResultWrapper() {
     const [isLoading, setIsLoading] = useState(false);
     const [pageScreenshot, setPageScreenshot] = useState(null);
     const [pageUrl, setPageUrl] = useState('http://www.google.com');
-    const [accessibility, setAccessibility] = useState("N/A");
-    const [bestPractices, setBestPractices] = useState("N/A");
     const [performance, setPerformance] = useState("N/A");
     const [seo, setSeo] = useState("N/A");
 
@@ -66,13 +64,11 @@ function PageResultWrapper() {
             .then(
                 (response) => {
                     setIsLoading(false);
-                    if (response.status == false) {
+                    if (response.status === false) {
                         setError("Sorry :( Could not get results for the requested web page. Please try again later.");
                     }
                     else {
                         if (response.result?.pageResult != null) {
-                            setAccessibility(response.result.pageResult.accessibility);
-                            setBestPractices(response.result.pageResult.bestPractices);
                             setPerformance(response.result.pageResult.performance);
                             setSeo(response.result.pageResult.seo);
                         }
@@ -123,31 +119,7 @@ function PageResultWrapper() {
                             <Typography component="h2" variant="h3" align="center">
                                 Web page scoring
                             </Typography>
-                        </Grid>
-                        <Grid item xs={5} sm={2} className={classes.gridItem}>
-                            <Card variant="outlined">
-                                <CardContent>
-                                    <Typography className={classes.title} color="textSecondary" align="center">
-                                        Accessibility
-                                        </Typography>
-                                    <Typography variant="h3" component="p" align="center">
-                                        {accessibility.score}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                        <Grid item xs={5} sm={2} className={classes.gridItem}>
-                            <Card variant="outlined">
-                                <CardContent>
-                                    <Typography className={classes.title} color="textSecondary" align="center">
-                                        Best practices
-                                        </Typography>
-                                    <Typography variant="h3" component="p" align="center">
-                                        {bestPractices.score}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
+                        </Grid>                       
                         <Grid item xs={5} sm={2} className={classes.gridItem}>
                             <Card variant="outlined">
                                 <CardContent>
