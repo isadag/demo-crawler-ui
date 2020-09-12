@@ -53,11 +53,11 @@ function PageResultWrapper() {
         if (pageUrl == null || pageUrl === '') {
             setPageUrl('http://www.google.com');
         }
-        getPageFromCrawler(addHttpIfMissing(pageUrl), true);
+        getPageFromCrawler(addHttpIfMissing(pageUrl));
     }
 
-    const getPageFromCrawler = (url, includePageResult) => {
-        let requestUrl = `${pageCrawlerApiUrl}?url=${url}&fetchPageResults=${includePageResult}`;
+    const getPageFromCrawler = (url) => {
+        let requestUrl = `${pageCrawlerApiUrl}?url=${url}`;
         setIsLoading(true);
         fetch(requestUrl)
             .then(res => res.json())
@@ -68,10 +68,6 @@ function PageResultWrapper() {
                         setError("Sorry :( Could not get results for the requested web page. Please try again later.");
                     }
                     else {
-                        if (response.result?.pageResult != null) {
-                            setPerformance(response.result.pageResult.performance);
-                            setSeo(response.result.pageResult.seo);
-                        }
                         setPageScreenshot(response.result.fullPageScreenshot);
                     }
                 },
@@ -87,7 +83,18 @@ function PageResultWrapper() {
     }
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return (
+            <React.Fragment>
+                <Typography>
+                    Error: {error.message}
+                </Typography>
+                <Grid container direction="column" alignItems="center" justify="center">
+                    <Grid item xs={12}>
+                        <Form xs={12} className="center" onSubmit={onSubmit} onChange={onInputChange} />
+                    </Grid>
+                </Grid>
+            </React.Fragment>
+        )
     } else if (isLoading) {
         return (
             <React.Fragment>
