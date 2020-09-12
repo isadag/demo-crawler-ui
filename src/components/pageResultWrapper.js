@@ -106,54 +106,20 @@ function PageResultWrapper() {
     } else {
         if (pageScreenshot != null) {
             return (
-                <React.Fragment>
-                    <Grid container direction="column" alignItems="center" justify="center">
-                        <Grid item xs={12}>
-                            <Form onSubmit={onSubmit} onChange={onInputChange} pageUrl={pageUrl} />
-                        </Grid>
-                        <Slide direction="up" in={pageScreenshot} mountOnEnter unmountOnExit>
-                            <Grid item xs={10} sm={8}>
-                                <Card>
-                                    <CardContent>
-                                        <img src={`data:image/png;base64,${pageScreenshot}`} alt="screenshot" className={classes.image} />
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        </Slide>
+                <Grid container direction="column" alignItems="center" justify="center">
+                    <Grid item xs={12}>
+                        <Form onSubmit={onSubmit} onChange={onInputChange} pageUrl={pageUrl} />
                     </Grid>
-                    <Grid container direction="row" justify="space-around" alignItems="flex-start">
-                        <Grid item xs={12} className={classes.gridItem}>
-                            <Typography component="h2" variant="h3" align="center">
-                                Web page scoring
-                            </Typography>
-                        </Grid>                       
-                        <Grid item xs={5} sm={2} className={classes.gridItem}>
-                            <Card variant="outlined">
+                    <Slide direction="up" in={pageScreenshot} mountOnEnter unmountOnExit>
+                        <Grid item xs={10} sm={8}>
+                            <Card>
                                 <CardContent>
-                                    <Typography className={classes.title} color="textSecondary" align="center">
-                                        Performance
-                                        </Typography>
-                                    <Typography variant="h3" component="p" align="center">
-                                        {performance.score}
-                                    </Typography>
+                                    <img src={`data:image/png;base64,${pageScreenshot}`} alt="screenshot" className={classes.image} />
                                 </CardContent>
                             </Card>
                         </Grid>
-
-                        <Grid item xs={5} sm={2} className={classes.gridItem}>
-                            <Card variant="outlined">
-                                <CardContent>
-                                    <Typography className={classes.title} color="textSecondary" align="center">
-                                        Seo
-                                        </Typography>
-                                    <Typography variant="h3" component="p" align="center">
-                                        {seo.score}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    </Grid>
-                </React.Fragment>
+                    </Slide>
+                </Grid>
             );
         } else {
             return (
