@@ -22,13 +22,11 @@ const useStyles = makeStyles((theme) => ({
 function PageResultWrapper() {
     const classes = useStyles();
     const pageCrawlerApiUrl = "https://demo-crawler-api.herokuapp.com/api/pagecrawler";
-    // const pageCrawlerApiUrl = "https://localhost:5001/api/pagecrawler";
+    // const pageCrawlerApiUrl = "https://localhost:5001/api/page-crawler";
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [pageScreenshot, setPageScreenshot] = useState(null);
     const [pageUrl, setPageUrl] = useState('http://www.google.com');
-    const [performance, setPerformance] = useState("N/A");
-    const [seo, setSeo] = useState("N/A");
 
     const handleClose = () => {
         setIsLoading(false);
@@ -60,26 +58,27 @@ function PageResultWrapper() {
         let requestUrl = `${pageCrawlerApiUrl}?url=${url}`;
         setIsLoading(true);
         fetch(requestUrl)
-            .then(res => res.json())
-            .then(
-                (response) => {
-                    setIsLoading(false);
-                    if (response.status === false) {
-                        setError("Sorry :( Could not get results for the requested web page. Please try again later.");
-                    }
-                    else {
-                        setPageScreenshot(response.result.fullPageScreenshot);
-                    }
-                },
-                (error) => {
-                    if (!error) {
-                        error = "An unexpected error occurred while fetching the page results. Please try again later.";
-                    }
-                    console.log(error);
-                    setIsLoading(false);
-                    setError(error);
+            .then((res => {
+                if (!res.ok) {
+                    throw Error(res.statusText);
                 }
-            )
+                return res;
+            }))
+            .then((res => res.json()))            
+            .then(responseJson => {
+                if (responseJson.fullPageScreenshot !== '') {
+                    setIsLoading(false);
+                    setPageScreenshot(responseJson.fullPageScreenshot);                    
+                }
+                else {
+                    throw Error("Something something wrong");
+                }
+            })
+            .catch((ex => {
+                console.log(ex);
+                setIsLoading(false);
+                setError(ex);
+            }));
     }
 
     if (error) {
@@ -90,7 +89,7 @@ function PageResultWrapper() {
                 </Typography>
                 <Grid container direction="column" alignItems="center" justify="center">
                     <Grid item xs={12}>
-                        <Form xs={12} className="center" onSubmit={onSubmit} onChange={onInputChange} />
+                        <Form xs={12} className="center" onSubmit={onSubmit} onChange={onInputChange} pageUrl={pageUrl} />
                     </Grid>
                 </Grid>
             </React.Fragment>
