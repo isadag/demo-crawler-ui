@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 function PageResultWrapper() {
     const classes = useStyles();
-    const pageCrawlerApiUrl = "https://demo-crawler-api.herokuapp.com/api/pagecrawler";
+    const pageCrawlerApiUrl = "https://demo-crawler-api.herokuapp.com/api/page-crawler";
     // const pageCrawlerApiUrl = "https://localhost:5001/api/page-crawler";
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
