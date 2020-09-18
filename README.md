@@ -43,3 +43,4 @@ This react app makes up the UI for the "demo crawler" app which is structured as
 - [ ]  Look over error handling and clean it up.
 - [ ]  Add unit tests
 - [ ]  Break out API url to config file instead (even if local vs heroku is used in local dev too when testing)
+- [ ]  Read url from query string and get screenshot for requested page
