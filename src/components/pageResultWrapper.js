@@ -93,8 +93,8 @@ function PageResultWrapper() {
     } else {
         return (
             <Grid container direction="column" alignItems="center" justify="center">
-                <Grid item xs={12}>
-                    <Form xs={12} className="center" onSubmit={onSubmit} onChange={onInputChange} pageUrl={pageUrl} error={error} />
+                <Grid item xs={9} sm={4}>
+                    <Form className="center" onSubmit={onSubmit} onChange={onInputChange} pageUrl={pageUrl} error={error} />
                 </Grid>
                 {
                     pageScreenshot != null &&

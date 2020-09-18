@@ -9,7 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    margin: theme.spacing(3, 0, 3),
+    margin: theme.spacing(2, 0, 2),
   },
 }));
 
@@ -31,11 +31,11 @@ function App() {
       </AppBar>
       <Grid container direction="column" alignItems="center" justify="center" className={classes.container}>
         <Grid item xs={12} className={classes.container}>
-          <Typography variant="h2" component="h1" align="center">
+          <Typography variant="h3" component="h1" align="center">
             Grab a screenshot!
           </Typography>
-          <Typography variant="h5" component="p" align="center">
-            Enter a web page's URL below to grab a screenshot of it
+          <Typography variant="h6" component="p" align="center">
+            Enter a web page's URL to grab a screenshot of it
           </Typography>
         </Grid>
         <PageWrapper />
