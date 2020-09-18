@@ -42,3 +42,4 @@ This react app makes up the UI for the "demo crawler" app which is structured as
 - [ ]  Refactor pageResultWrapper component - too big and messy
 - [ ]  Look over error handling and clean it up.
 - [ ]  Add unit tests
+- [ ]  Break out API url to config file instead (even if local vs heroku is used in local dev too when testing)
