@@ -14,8 +14,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
-  // const statusApiUrl = "https://demo-crawler-api.herokuapp.com/api/crawlerstatus";
-  // const screenshotApiUrl = "https://demo-crawler-api.herokuapp.com/api/pagecrawler";
   const classes = useStyles();
 
   return (
@@ -34,15 +32,13 @@ function App() {
       <Grid container direction="column" alignItems="center" justify="center" className={classes.container}>
         <Grid item xs={12} className={classes.container}>
           <Typography variant="h2" component="h1" align="center">
-            Web page stuff
+            Grab a screenshot!
           </Typography>
           <Typography variant="h5" component="p" align="center">
-            Do something to find something yada yada yada...
+            Enter a web page's URL below to grab a screenshot of it
           </Typography>
         </Grid>
-          {/* <Grid item xs={12}> */}
-            <PageWrapper />
-          {/* </Grid> */}
+        <PageWrapper />
       </Grid>
     </React.Fragment>
 

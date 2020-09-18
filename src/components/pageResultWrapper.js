@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Slide from '@material-ui/core/Slide';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+import Validator from 'validator';
 
 const useStyles = makeStyles((theme) => ({
     image: {
@@ -21,12 +21,12 @@ const useStyles = makeStyles((theme) => ({
 
 function PageResultWrapper() {
     const classes = useStyles();
-    const pageCrawlerApiUrl = "https://demo-crawler-api.herokuapp.com/api/page-crawler";
-    // const pageCrawlerApiUrl = "https://localhost:5001/api/page-crawler";
+    // const pageCrawlerApiUrl = "https://demo-crawler-api.herokuapp.com/api/page-crawler";
+    const pageCrawlerApiUrl = "https://localhost:5001/api/page-crawler";
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [pageScreenshot, setPageScreenshot] = useState(null);
-    const [pageUrl, setPageUrl] = useState('http://www.google.com');
+    const [pageUrl, setPageUrl] = useState(null);
 
     const handleClose = () => {
         setIsLoading(false);
@@ -46,12 +46,13 @@ function PageResultWrapper() {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        setPageScreenshot(null);
 
-        // TODO: Add validation and feedback on error instead
-        if (pageUrl == null || pageUrl === '') {
-            setPageUrl('http://www.google.com');
+        if (pageUrl != null && Validator.isURL(pageUrl)) {
+            getPageFromCrawler(addHttpIfMissing(pageUrl));
+        } else {
+            setError("Provide a valid URL");
         }
-        getPageFromCrawler(addHttpIfMissing(pageUrl));
     }
 
     const getPageFromCrawler = (url) => {
@@ -64,37 +65,24 @@ function PageResultWrapper() {
                 }
                 return res;
             }))
-            .then((res => res.json()))            
+            .then((res => res.json()))
             .then(responseJson => {
                 if (responseJson.fullPageScreenshot !== '') {
                     setIsLoading(false);
-                    setPageScreenshot(responseJson.fullPageScreenshot);                    
+                    setPageScreenshot(responseJson.fullPageScreenshot);
+                    setError(null);
                 }
                 else {
-                    throw Error("Something something wrong");
+                    throw Error("Web page not found, try another URL");
                 }
             })
             .catch((ex => {
-                console.log(ex);
                 setIsLoading(false);
-                setError(ex);
+                setError(ex.message);
             }));
     }
 
-    if (error) {
-        return (
-            <React.Fragment>
-                <Typography>
-                    Error: {error.message}
-                </Typography>
-                <Grid container direction="column" alignItems="center" justify="center">
-                    <Grid item xs={12}>
-                        <Form xs={12} className="center" onSubmit={onSubmit} onChange={onInputChange} pageUrl={pageUrl} />
-                    </Grid>
-                </Grid>
-            </React.Fragment>
-        )
-    } else if (isLoading) {
+    if (isLoading) {
         return (
             <React.Fragment>
                 <Backdrop open={isLoading} onClick={handleClose}>
@@ -103,12 +91,13 @@ function PageResultWrapper() {
             </React.Fragment>
         );
     } else {
-        if (pageScreenshot != null) {
-            return (
-                <Grid container direction="column" alignItems="center" justify="center">
-                    <Grid item xs={12}>
-                        <Form onSubmit={onSubmit} onChange={onInputChange} pageUrl={pageUrl} />
-                    </Grid>
+        return (
+            <Grid container direction="column" alignItems="center" justify="center">
+                <Grid item xs={12}>
+                    <Form xs={12} className="center" onSubmit={onSubmit} onChange={onInputChange} pageUrl={pageUrl} error={error} />
+                </Grid>
+                {
+                    pageScreenshot != null &&
                     <Slide direction="up" in={pageScreenshot} mountOnEnter unmountOnExit>
                         <Grid item xs={10} sm={8}>
                             <Card>
@@ -118,19 +107,9 @@ function PageResultWrapper() {
                             </Card>
                         </Grid>
                     </Slide>
-                </Grid>
-            );
-        } else {
-            return (
-                <React.Fragment>
-                    <Grid container direction="column" alignItems="center" justify="center">
-                        <Grid item xs={12}>
-                            <Form className="center" onSubmit={onSubmit} onChange={onInputChange} />
-                        </Grid>
-                    </Grid>
-                </React.Fragment>
-            );
-        }
+                }
+            </Grid>
+        );
     }
 }
 
