@@ -29,3 +29,16 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 This react app makes up the UI for the "demo crawler" app which is structured as:
 
 ![Architecture](./arch_ui.png)
+
+
+## Implemented in this demo
+- [x] Screenshot support via Chromium browser
+- []  Google lighthouse report
+- [x] Material UI
+- []  Typescript
+- []  ?
+
+### TODOs
+- []  Refactor pageResultWrapper component - too big and messy
+- []  Look over error handling and clean it up.
+- []  Add unit tests
