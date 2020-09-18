@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import Form from './form';
 import { makeStyles } from '@material-ui/core/styles';
-import Backdrop from '@material-ui/core/Backdrop';
 import Grid from '@material-ui/core/Grid';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Slide from '@material-ui/core/Slide';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -28,10 +26,6 @@ function PageResultWrapper() {
     const [pageScreenshot, setPageScreenshot] = useState(null);
     const [pageUrl, setPageUrl] = useState(null);
 
-    const handleClose = () => {
-        setIsLoading(false);
-    };
-
     function addHttpIfMissing(link) {
         if (link.search(/^http[s]?:\/\//) === -1) {
             link = 'http://' + link;
@@ -46,6 +40,7 @@ function PageResultWrapper() {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        setError(null);
         setPageScreenshot(null);
 
         if (pageUrl != null && Validator.isURL(pageUrl)) {
@@ -82,35 +77,25 @@ function PageResultWrapper() {
             }));
     }
 
-    if (isLoading) {
-        return (
-            <React.Fragment>
-                <Backdrop open={isLoading} onClick={handleClose}>
-                    <CircularProgress color="inherit" />
-                </Backdrop>
-            </React.Fragment>
-        );
-    } else {
-        return (
-            <Grid container direction="column" alignItems="center" justify="center">
-                <Grid item xs={9} sm={4}>
-                    <Form className="center" onSubmit={onSubmit} onChange={onInputChange} pageUrl={pageUrl} error={error} />
-                </Grid>
-                {
-                    pageScreenshot != null &&
-                    <Slide direction="up" in={pageScreenshot} mountOnEnter unmountOnExit>
-                        <Grid item xs={10} sm={8}>
-                            <Card>
-                                <CardContent>
-                                    <img src={`data:image/png;base64,${pageScreenshot}`} alt="screenshot" className={classes.image} />
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    </Slide>
-                }
+    return (
+        <Grid container direction="column" alignItems="center" justify="center">
+            <Grid item xs={9} sm={4}>
+                <Form className="center" loading={isLoading} onSubmit={onSubmit} onChange={onInputChange} pageUrl={pageUrl} error={error} />
             </Grid>
-        );
-    }
+            {
+                pageScreenshot != null &&
+                <Slide direction="up" in={pageScreenshot} mountOnEnter unmountOnExit>
+                    <Grid item xs={10} sm={8}>
+                        <Card>
+                            <CardContent>
+                                <img src={`data:image/png;base64,${pageScreenshot}`} alt="screenshot" className={classes.image} />
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Slide>
+            }
+        </Grid>
+    );
 }
 
 export default PageResultWrapper;
