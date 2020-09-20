@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Form from './form';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Slide from '@material-ui/core/Slide';
+import Fade from '@material-ui/core/Fade';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Validator from 'validator';
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     },
     gridItem: {
         margin: theme.spacing(3, 0, 3),
-    },
+    }
 }));
 
 
@@ -33,6 +33,16 @@ function PageResultWrapper() {
         return link;
     }
 
+    /* Function used to make sure the keyboard is dismissed
+    on mobile devices if the user submits via the 
+    keyboard's enter key instead of using the button
+    */
+    const focusOnElement = (elementQuerySelector) => {
+        let element = document.querySelector(elementQuerySelector);
+        element.tabIndex = 1;
+        element.focus();
+    }
+
     const onInputChange = (e) => {
         let url = e.target.value;
         setPageUrl(url);
@@ -40,6 +50,10 @@ function PageResultWrapper() {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        
+        // Dismiss keyboard on mobile devices, disturbing otherwise
+        focusOnElement('body');
+
         setError(null);
         setPageScreenshot(null);
 
@@ -84,15 +98,15 @@ function PageResultWrapper() {
             </Grid>
             {
                 pageScreenshot != null &&
-                <Slide direction="up" in={pageScreenshot} mountOnEnter unmountOnExit>
+                <Fade in={pageScreenshot} timeout={1500}>
                     <Grid item xs={10} sm={8}>
-                        <Card>
+                        <Card raised>
                             <CardContent>
                                 <img src={`data:image/png;base64,${pageScreenshot}`} alt="screenshot" className={classes.image} />
                             </CardContent>
                         </Card>
                     </Grid>
-                </Slide>
+                </Fade>
             }
         </Grid>
     );
