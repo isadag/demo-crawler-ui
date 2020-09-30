@@ -70,6 +70,9 @@ function PageResultWrapper() {
         fetch(requestUrl)
             .then((res => {
                 if (!res.ok) {
+                    if (res.status === 400) {
+                        throw Error("Provide a valid URL");
+                    }
                     throw Error(res.statusText);
                 }
                 return res;
