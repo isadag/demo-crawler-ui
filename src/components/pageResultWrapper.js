@@ -1,24 +1,11 @@
 import React, { useState } from 'react';
 import Form from './form';
-import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Fade from '@material-ui/core/Fade';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Screenshot from "./screenshot";
 import Validator from 'validator';
 
-const useStyles = makeStyles((theme) => ({
-    image: {
-        width: '100%'
-    },
-    gridItem: {
-        margin: theme.spacing(3, 0, 3),
-    }
-}));
-
-
 function PageResultWrapper() {
-    const classes = useStyles();
     const pageCrawlerApiUrl = "https://demo-crawler-api.herokuapp.com/api/page-crawler";
     // const pageCrawlerApiUrl = "https://localhost:5001/api/page-crawler";
     const [error, setError] = useState(null);
@@ -50,7 +37,7 @@ function PageResultWrapper() {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        
+
         // Dismiss keyboard on mobile devices, disturbing otherwise
         focusOnElement('body');
 
@@ -103,11 +90,7 @@ function PageResultWrapper() {
                 pageScreenshot != null &&
                 <Fade in={pageScreenshot} timeout={1500}>
                     <Grid item xs={10} sm={8}>
-                        <Card raised>
-                            <CardContent>
-                                <img src={`data:image/png;base64,${pageScreenshot}`} alt="screenshot" className={classes.image} />
-                            </CardContent>
-                        </Card>
+                        <Screenshot pageScreenshot={pageScreenshot} />
                     </Grid>
                 </Fade>
             }
