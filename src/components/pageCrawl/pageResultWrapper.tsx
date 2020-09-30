@@ -15,15 +15,6 @@ function PageResultWrapper() {
     const [pageScreenshot, setPageScreenshot] = useState<string>('');
     const [pageUrl, setPageUrl] = useState<string>('');
 
-    /* Ugly hack to make a call to the API to make Heroku wake my machines up on page load (using free tier because why not).
-    Could be handled by running a ping check regularly, but given my setup it would exhaust my free hours, 
-    this works the best for the PoC purpose and to warm up my machine before any user makes any request.
-    */
-    useEffect(() => {
-        let requestUrl = `${pageCrawlerApiUrl}?url=https://www.google.com`;
-        fetch(requestUrl);
-    }, []);
-
     const onInputChange = (e: React.FormEvent<HTMLInputElement>) => {
         let url = e.currentTarget.value;
         setPageUrl(url);
