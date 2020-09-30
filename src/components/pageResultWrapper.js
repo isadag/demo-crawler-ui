@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import Form from './form';
 import Grid from '@material-ui/core/Grid';
 import Fade from '@material-ui/core/Fade';
-import Screenshot from "./screenshot";
+import Screenshot from './screenshot';
 import Validator from 'validator';
+import { addHttpIfMissing } from '../utils/urlUtil';
+import { focusOnElement } from '../utils/formUtil';
 
 function PageResultWrapper() {
     const pageCrawlerApiUrl = "https://demo-crawler-api.herokuapp.com/api/page-crawler";
@@ -12,23 +14,6 @@ function PageResultWrapper() {
     const [isLoading, setIsLoading] = useState(false);
     const [pageScreenshot, setPageScreenshot] = useState(null);
     const [pageUrl, setPageUrl] = useState(null);
-
-    function addHttpIfMissing(link) {
-        if (link.search(/^http[s]?:\/\//) === -1) {
-            link = 'http://' + link;
-        }
-        return link;
-    }
-
-    /* Function used to make sure the keyboard is dismissed
-    on mobile devices if the user submits via the 
-    keyboard's enter key instead of using the button
-    */
-    const focusOnElement = (elementQuerySelector) => {
-        let element = document.querySelector(elementQuerySelector);
-        element.tabIndex = 1;
-        element.focus();
-    }
 
     const onInputChange = (e) => {
         let url = e.target.value;
