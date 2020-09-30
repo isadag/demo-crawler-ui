@@ -10,10 +10,10 @@ import { focusOnElement } from '../../utils/formUtil';
 function PageResultWrapper() {
     const pageCrawlerApiUrl = "https://demo-crawler-api.herokuapp.com/api/page-crawler";
     // const pageCrawlerApiUrl = "https://localhost:5001/api/page-crawler";
-    const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [pageScreenshot, setPageScreenshot] = useState(null);
-    const [pageUrl, setPageUrl] = useState('');
+    const [error, setError] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [pageScreenshot, setPageScreenshot] = useState<string>('');
+    const [pageUrl, setPageUrl] = useState<string>('');
 
     /* Ugly hack to make a call to the API to make Heroku wake my machines up on page load (using free tier because why not).
     Could be handled by running a ping check regularly, but given my setup it would exhaust my free hours, 
@@ -24,19 +24,19 @@ function PageResultWrapper() {
         fetch(requestUrl);
     }, []);
 
-    const onInputChange = (e) => {
-        let url = e.target.value;
+    const onInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+        let url = e.currentTarget.value;
         setPageUrl(url);
     }
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: React.FormEvent<HTMLInputElement>) => {
         e.preventDefault();
 
         // Dismiss keyboard on mobile devices, disturbing otherwise
         focusOnElement('body');
 
-        setError(null);
-        setPageScreenshot(null);
+        setError('');
+        setPageScreenshot('');
 
         if (pageUrl != null && Validator.isURL(pageUrl)) {
             getPageFromCrawler(addHttpIfMissing(pageUrl));
@@ -45,7 +45,7 @@ function PageResultWrapper() {
         }
     }
 
-    const getPageFromCrawler = (url) => {
+    const getPageFromCrawler = (url: string) => {
         let requestUrl = `${pageCrawlerApiUrl}?url=${url}`;
         setIsLoading(true);
         fetch(requestUrl)
@@ -63,7 +63,7 @@ function PageResultWrapper() {
                 if (responseJson.fullPageScreenshot !== '') {
                     setIsLoading(false);
                     setPageScreenshot(responseJson.fullPageScreenshot);
-                    setError(null);
+                    setError('');
                 }
                 else {
                     throw Error("Web page not found, try another URL");
@@ -81,8 +81,8 @@ function PageResultWrapper() {
                 <Form className="center" loading={isLoading} onSubmit={onSubmit} onChange={onInputChange} pageUrl={pageUrl} error={error} />
             </Grid>
             {
-                pageScreenshot != null &&
-                <Fade in={pageScreenshot} timeout={1500}>
+                pageScreenshot !== '' &&
+                <Fade in={true} timeout={1500}>
                     <Grid item xs={10} sm={8}>
                         <Screenshot pageScreenshot={pageScreenshot} />
                     </Grid>

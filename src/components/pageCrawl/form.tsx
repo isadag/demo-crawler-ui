@@ -14,12 +14,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Form = (props) => {
+const Form = (props: {error: string, onSubmit: any, onChange: any, className: string, loading: boolean, pageUrl: string}) => {
     const classes = useStyles();
     return (
         <React.Fragment>
             <form onSubmit={props.onSubmit}>
-                <TextField error={props.error} helperText={props.error} inputProps={{ inputMode: 'url' }} fullWidth name="url" placeholder="https://www.google.com" id="standard-required" label="Web page URL" onChange={props.onChange} value={props.pageUrl} />
+                <TextField error={props.error !== ''} helperText={props.error} inputProps={{ inputMode: 'url' }} fullWidth name="url" placeholder="https://www.google.com" id="standard-required" label="Web page URL" onChange={props.onChange} value={props.pageUrl} />
                 <Button disabled={props.loading} fullWidth variant="contained" color="primary" type="submit" className={classes.button}>
                     {props.loading &&
                         <CircularProgress size={22} className={classes.progress} />

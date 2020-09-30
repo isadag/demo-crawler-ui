@@ -2,8 +2,8 @@
    on mobile devices if the user submits via the 
    keyboard's enter key instead of using the button
 */
-const focusOnElement = (elementQuerySelector) => {
-    let element = document.querySelector(elementQuerySelector);
+const focusOnElement = (elementQuerySelector: string) => {
+    let element: any = document.querySelector(elementQuerySelector);
     element.tabIndex = 1;
     element.focus();
 }

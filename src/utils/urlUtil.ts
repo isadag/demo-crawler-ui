@@ -1,4 +1,4 @@
-function addHttpIfMissing(link) {
+function addHttpIfMissing(link: string) {
     if (link.search(/^http[s]?:\/\//) === -1) {
         link = 'http://' + link;
     }

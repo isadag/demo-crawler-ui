@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Screenshot = (props) => {
+const Screenshot = (props: any) => {
     const classes = useStyles();
     return (
         <Card raised>
