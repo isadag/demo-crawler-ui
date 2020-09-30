@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Form from './form';
 import Grid from '@material-ui/core/Grid';
 import Fade from '@material-ui/core/Fade';
 import Screenshot from './screenshot';
 import Validator from 'validator';
-import { addHttpIfMissing } from '../utils/urlUtil';
-import { focusOnElement } from '../utils/formUtil';
+import { addHttpIfMissing } from '../../utils/urlUtil';
+import { focusOnElement } from '../../utils/formUtil';
 
 function PageResultWrapper() {
     const pageCrawlerApiUrl = "https://demo-crawler-api.herokuapp.com/api/page-crawler";
@@ -13,7 +13,16 @@ function PageResultWrapper() {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [pageScreenshot, setPageScreenshot] = useState(null);
-    const [pageUrl, setPageUrl] = useState(null);
+    const [pageUrl, setPageUrl] = useState('');
+
+    /* Ugly hack to make a call to the API to make Heroku wake my machines up on page load (using free tier because why not).
+    Could be handled by running a ping check regularly, but given my setup it would exhaust my free hours, 
+    this works the best for the PoC purpose and to warm up my machine before any user makes any request.
+    */
+    useEffect(() => {
+        let requestUrl = `${pageCrawlerApiUrl}?url=https://www.google.com`;
+        fetch(requestUrl);
+    }, []);
 
     const onInputChange = (e) => {
         let url = e.target.value;
